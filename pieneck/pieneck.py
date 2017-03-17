@@ -1,4 +1,4 @@
-class Pieneck(Object):
+class Pieneck(object):
 
     ###
     # object instance method
