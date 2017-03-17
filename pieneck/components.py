@@ -17,6 +17,8 @@ class Wire(object):
         self._diameter = diameter
 
         # init other attributes to None, so they must be set later
+        self._tag_id = 0
+        self._segments = 0
         self._p1 = (None, None, None)
         self._p2 = (None, None, None)
 
@@ -166,14 +168,14 @@ class Wire(object):
     def setP1(self, position, rotation):
 
         # compute p2 as if p1 was at the center (0, 0 ,0)
-        p2 = (self._length/2, 0, 0)
+        p2 = (self._length, 0, 0)
 
         # rotate p2 around x,y,z axis
         p2 = self._rotate_point(p2, rotation)
 
         # reposition p1 and p2 to point specified
         self._p1 = position
-        self._p2 = self._translate_point(p2, p1)
+        self._p2 = self._translate_point(p2, position)
 
 
     ###
@@ -185,13 +187,21 @@ class Wire(object):
     def setP2(self, position, rotation):
 
         # compute p1 as if p2 was at the center (0, 0 ,0)
-        p1 = (-self._length/2, 0, 0)
+        p1 = (-self._length, 0, 0)
 
         # rotate p1 around x,y,z axis
         p1 = self._rotate_point(p1, rotation)
 
         # reposition p1 and p2 to point specified
-        self._p1 = self._translate_point(p1, p2)
+        self._p1 = self._translate_point(p1, position)
         self._p2 = position
 
 
+    ###
+    # output a text version of a wire in the NEC format
+    # format = "GW <tagid> <numsegments> <p1x> <p1y> <p1z> <p2x> <p2y> <p2z> <radius>
+    #
+    # @returns - string conversion
+    #
+    def to_nec(self):
+        return "GW %d %d, %f, %f, %f, %f, %f, %f, %f" % (self._tag_id, self._segments, self._p1[0], self._p1[1], self._p1[2], self._p2[0], self._p2[1], self._p2[2], self._diameter / 2)
