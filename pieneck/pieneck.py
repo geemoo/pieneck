@@ -5,8 +5,9 @@ class Pieneck(object):
     #
     def __init__(self):
 
-        # create a list to hold the components in
-        self._components = [ ]
+        # variables to hold simulation properties
+        self._geometry = [ ]
+        self._comments = [ ]
 
 
     ###
@@ -15,7 +16,7 @@ class Pieneck(object):
     # @param component - the component to add
     #
     def add(self, component):
-        self._components.append(component)
+        self._geometry.append(component)
 
 
     ###
@@ -28,7 +29,16 @@ class Pieneck(object):
         # open file, overwriting if it exists
         fp = open(filename, "w")
 
-        # write contents of simulation
+        # output comments
+        fp.write("CM --- NEC2 Input File created by pieneck\n")
+        for c in self._comments:
+            fp.write("CM %s\n" % c)
+        fp.write("CE --- End Comments ---\n")
+
+        # write contents of geometry
+        for c in self._geometry:
+            fp.write("%s\n" % c.to_nec())
+        fp.write("GE 0 0 0 0 0 0 0 0 0\n")
 
         # close the file
         fp.close()
