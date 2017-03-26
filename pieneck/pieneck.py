@@ -8,6 +8,9 @@ class Pieneck(object):
         # variables to hold simulation properties
         self._geometry = [ ]
         self._comments = [ ]
+        self._fstart = 299.8e6
+        self._fstop = 299.8e6
+        self._fstep = 0
 
 
     ###
@@ -17,6 +20,18 @@ class Pieneck(object):
     #
     def add(self, component):
         self._geometry.append(component)
+
+
+    ###
+    # specifies the frequency range we are going to measure
+    #
+    # @param fstart - start frequency
+    # @param fstop - stop frequency
+    # @param fstep - frequency interval to step over range
+    def frequency(self, fstart, fstop, fstep):
+        self._fstart = fstart
+        self._fstop = fstop
+        self._fstep = fstep
 
 
     ###
@@ -39,6 +54,13 @@ class Pieneck(object):
         for c in self._geometry:
             fp.write("%s\n" % c.to_nec())
         fp.write("GE 0 0 0 0 0 0 0 0 0\n")
+
+        # write the frequency card
+        num = ((self._fstop - self._fstart) / self._fstep) + 1
+        fp.write("FR 0 %d 0 0 %f %f 0 0 0 0\n" % (num, self._fstart, self._fstep))
+
+        # write the END card, it's always last
+        fp.write("EN 0 0 0 0 0 0 0 0 0\n")
 
         # close the file
         fp.close()

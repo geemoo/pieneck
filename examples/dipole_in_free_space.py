@@ -8,6 +8,9 @@ import pieneck.constants
 # create simulation object
 pn = Pieneck()
 
+# set frequency range to plot over
+pn.frequency(13e6, 15e6, 100e3)
+
 # create a 16ga, 20m long wire
 w1 = Wire(20, pieneck.constants.AWG16)
 w1.setCenter((0, 0, 10), (0, 0, 0))
