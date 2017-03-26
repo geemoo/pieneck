@@ -204,4 +204,52 @@ class Wire(object):
     # @returns - string conversion
     #
     def to_nec(self):
-        return "GW %d %d, %f, %f, %f, %f, %f, %f, %f" % (self._tag_id, self._segments, self._p1[0], self._p1[1], self._p1[2], self._p2[0], self._p2[1], self._p2[2], self._diameter / 2)
+        return "GW %d %d, %f, %f, %f, %f, %f, %f, %f" % (
+            self._tag_id, self._segments, 
+            self._p1[0], self._p1[1], self._p1[2], 
+            self._p2[0], self._p2[1], self._p2[2],
+            (self._diameter / 2)
+        )
+
+
+###
+# this class represents an excitation source in the simulation
+# at the moment, this is an abstract class
+#
+class Source(object):
+    
+    pass
+
+
+###
+# class to represent a voltage source in the system
+#
+class VoltageSource(Source):
+
+    # 
+    # define constants
+    #
+    APPLIED_E_FIELD = 0
+    CURRENT_SLOPE_DISCONTINUITY = 5
+
+
+    ###
+    # instance method
+    #
+    # @param flags - used to alter the type of voltage source.  defaults to None, can be "current-slope-discontinuity"
+    #
+    def __init__(self, flags = None):
+
+        # call super constructor
+        super(VoltageSource, self).__init__()
+
+        # parse sourcetype if set
+        if flags is None:
+            self._type = APPLIED_E_FIELD
+
+        elif flags == "applied-e-field":
+            self._type = APPLIED_E_FIELD
+
+        elif flags == "current-slope-discontinuity":
+                self._type = CURRENT_SLOPE_DISCONTINUITY
+

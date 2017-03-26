@@ -18,7 +18,9 @@ w1.setCenter((0, 0, 10), (0, 0, 0))
 # add the wire to the simulation
 pn.add(w1)
 
-# add a voltage source to the simulation
+# add a 1V voltage source to the simulation
+source = VoltageSource(1)
+source.attach(w1, 50)
 
 # export to an NEC file
 pn.writeNecFile("dipole_in_free_space.nec")
