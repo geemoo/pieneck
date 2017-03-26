@@ -7,6 +7,7 @@ class Pieneck(object):
 
         # variables to hold simulation properties
         self._geometry = [ ]
+        self._properties = [ ]
         self._comments = [ ]
         self._fstart = 299.8e6
         self._fstop = 299.8e6
@@ -19,7 +20,12 @@ class Pieneck(object):
     # @param component - the component to add
     #
     def add(self, component):
-        self._geometry.append(component)
+        if component.isGeometry():
+            self._geometry.append(component)
+        elif component.isProperty():
+            self._properties.append(component)
+        else:
+            raise Error("unsupported component type: %s" % component)
 
 
     ###
@@ -55,6 +61,10 @@ class Pieneck(object):
             fp.write("%s\n" % c.to_nec())
         fp.write("GE 0 0 0 0 0 0 0 0 0\n")
 
+        # write all our properties
+        for c in self._properties:
+            fp.write("%s\n" % c.to_nec())
+    
         # write the frequency card
         num = ((self._fstop - self._fstart) / self._fstep) + 1
         fp.write("FR 0 %d 0 0 %f %f 0 0 0 0\n" % (num, self._fstart, self._fstep))

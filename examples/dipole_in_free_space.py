@@ -1,7 +1,8 @@
 #!/usr/bin/python
 
 from pieneck.pieneck import Pieneck
-from pieneck.components import Wire
+from pieneck.geometry import Wire
+from pieneck.properties import VoltageSource
 import pieneck.constants
 
 
@@ -19,8 +20,9 @@ w1.setCenter((0, 0, 10), (0, 0, 0))
 pn.add(w1)
 
 # add a 1V voltage source to the simulation
-source = VoltageSource(1)
+source = VoltageSource(1 - 2j)
 source.attach(w1, 50)
+pn.add(source)
 
 # export to an NEC file
 pn.writeNecFile("dipole_in_free_space.nec")

@@ -1,9 +1,29 @@
 from math import (radians, sin, cos)
 
+
+###
+# an abstract class that all antenna components will be a part of
+#
+class Geometry(object):
+    
+    ###
+    # is this object a geometry component?
+    #
+    def isGeometry(self):
+        return True
+
+
+    ###
+    # is this object a property?
+    #
+    def isProperty(self):
+        return False
+
+
 ###
 # this class represents a straight piece of wire
 #
-class Wire(object):
+class Wire(Geometry):
 
     ###
     # instance method
@@ -12,6 +32,9 @@ class Wire(object):
     # @param diameter - diameter of wire
     #
     def __init__(self, length, diameter):
+        # call super
+        super(Wire, self).__init__()
+
         # store attributes
         self._length = length
         self._diameter = diameter
@@ -211,45 +234,4 @@ class Wire(object):
             (self._diameter / 2)
         )
 
-
-###
-# this class represents an excitation source in the simulation
-# at the moment, this is an abstract class
-#
-class Source(object):
-    
-    pass
-
-
-###
-# class to represent a voltage source in the system
-#
-class VoltageSource(Source):
-
-    # 
-    # define constants
-    #
-    APPLIED_E_FIELD = 0
-    CURRENT_SLOPE_DISCONTINUITY = 5
-
-
-    ###
-    # instance method
-    #
-    # @param flags - used to alter the type of voltage source.  defaults to None, can be "current-slope-discontinuity"
-    #
-    def __init__(self, flags = None):
-
-        # call super constructor
-        super(VoltageSource, self).__init__()
-
-        # parse sourcetype if set
-        if flags is None:
-            self._type = APPLIED_E_FIELD
-
-        elif flags == "applied-e-field":
-            self._type = APPLIED_E_FIELD
-
-        elif flags == "current-slope-discontinuity":
-                self._type = CURRENT_SLOPE_DISCONTINUITY
 
