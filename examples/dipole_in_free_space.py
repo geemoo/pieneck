@@ -8,6 +8,7 @@ import pieneck.constants
 
 # create simulation object
 pn = Pieneck()
+pn.resolution(51, 360, 360)
 
 # set frequency range to plot over
 pn.frequency(13e6, 15e6, 100e3)

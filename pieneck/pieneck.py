@@ -12,6 +12,23 @@ class Pieneck(object):
         self._fstart = 299.8e6
         self._fstop = 299.8e6
         self._fstep = 0
+        self._segments = 11
+        self._yrotstep = 18
+        self._zrotstep = 18
+
+
+    ###
+    # sets the resolution properties that determines how detailed the simulation is
+    #
+    # @param wirechunks - how many pieces should wires be segmented into during simulation
+    # @param yrotstep - how many degrees should we step when doing radation plots around y axis
+    # @param zrotstep - how many degrees should we step when doing radation plots around z axis
+    #
+    def resolution(self, segments = 11, yrotstep = 18, zrotstep = 18):
+        # store values passed in for later
+        self._segments = segments
+        self._yrotstep = yrotstep
+        self._zrotstep = zrotstep
 
 
     ###
@@ -58,7 +75,7 @@ class Pieneck(object):
 
         # write contents of geometry
         for c in self._geometry:
-            fp.write("%s\n" % c.to_nec())
+            fp.write("%s\n" % c.to_nec(self._segments))
         fp.write("GE 0 0 0 0 0 0 0 0 0\n")
 
         # write all our properties

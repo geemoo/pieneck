@@ -41,7 +41,6 @@ class Wire(Geometry):
 
         # init other attributes to None, so they must be set later
         self._tag_id = 0
-        self._segments = 0
         self._p1 = (None, None, None)
         self._p2 = (None, None, None)
 
@@ -224,11 +223,12 @@ class Wire(Geometry):
     # output a text version of a wire in the NEC format
     # format = "GW <tagid> <numsegments> <p1x> <p1y> <p1z> <p2x> <p2y> <p2z> <radius>
     #
+    # @param numsegments - the number of segments in the line
     # @returns - string conversion
     #
-    def to_nec(self):
-        return "GW %d %d, %f, %f, %f, %f, %f, %f, %f" % (
-            self._tag_id, self._segments, 
+    def to_nec(self, numsegments):
+        return "GW %d %d %f %f %f %f %f %f %f" % (
+            self._tag_id, numsegments, 
             self._p1[0], self._p1[1], self._p1[2], 
             self._p2[0], self._p2[1], self._p2[2],
             (self._diameter / 2)
