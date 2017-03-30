@@ -54,6 +54,9 @@ class Source(Property):
         self._attached = component
         self._position = position
 
+        # also store in the component that we are attached to it
+        component.attach(self)
+
 
 ###
 # class to represent a voltage source in the system
@@ -94,9 +97,8 @@ class VoltageSource(Source):
     # @returns - string in NEC format
     #
     def to_nec(self):
-        seg = 0
         return "EX %d %d %d 0 %f %f 0 0 0" % (
             self._type, 
-            self._attached._tag_id, seg, 
+            self._attached._tag_id, self._position + 1, 
             self._voltage.real, self._voltage.imag
         )

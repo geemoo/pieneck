@@ -43,6 +43,7 @@ class Wire(Geometry):
         self._tag_id = 0
         self._p1 = (None, None, None)
         self._p2 = (None, None, None)
+        self._source = None
 
 
     ###
@@ -220,6 +221,15 @@ class Wire(Geometry):
 
 
     ###
+    # attach a source to this wire
+    #
+    # @param source - the source to attach
+    #
+    def attach(self, source):
+        self._source = source
+
+
+    ###
     # output a text version of a wire in the NEC format
     # format = "GW <tagid> <numsegments> <p1x> <p1y> <p1z> <p2x> <p2y> <p2z> <radius>
     #
@@ -227,6 +237,12 @@ class Wire(Geometry):
     # @returns - string conversion
     #
     def to_nec(self, numsegments):
+
+        # if this wire has a source, force the segments to 101, so that placing the source is easy
+        # TODO: make this more sofisticated
+        if not (self._source is None):
+            numsegments = 101
+
         return "GW %d %d %f %f %f %f %f %f %f" % (
             self._tag_id, numsegments, 
             self._p1[0], self._p1[1], self._p1[2], 

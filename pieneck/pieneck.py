@@ -73,8 +73,11 @@ class Pieneck(object):
             fp.write("CM %s\n" % c)
         fp.write("CE --- End Comments ---\n")
 
-        # write contents of geometry
+        # write contents of geometry, set tag_id's as we do this
+        tag_id = 1
         for c in self._geometry:
+            c._tag_id = tag_id
+            tag_id = tag_id + 1
             fp.write("%s\n" % c.to_nec(self._segments))
         fp.write("GE 0 0 0 0 0 0 0 0 0\n")
 
@@ -84,7 +87,7 @@ class Pieneck(object):
     
         # write the frequency card
         num = ((self._fstop - self._fstart) / self._fstep) + 1
-        fp.write("FR 0 %d 0 0 %f %f 0 0 0 0\n" % (num, self._fstart, self._fstep))
+        fp.write("FR 0 %d 0 0 %f %f 0 0 0 0\n" % (num, self._fstart / 1e6, self._fstep / 1e6))
 
         # write the END card, it's always last
         fp.write("EN 0 0 0 0 0 0 0 0 0\n")
