@@ -89,6 +89,9 @@ class Pieneck(object):
         num = ((self._fstop - self._fstart) / self._fstep) + 1
         fp.write("FR 0 %d 0 0 %f %f 0 0 0 0\n" % (num, self._fstart / 1e6, self._fstep / 1e6))
 
+        # write the radiation pattern card, just the basics for now
+        fp.write("RP 0 %d %d 0 0.0 0.0 %d %d 0 0\n" % ((360 / self._zrotstep), (360 / self._yrotstep), self._zrotstep, self._yrotstep))
+
         # write the END card, it's always last
         fp.write("EN 0 0 0 0 0 0 0 0 0\n")
 

@@ -8,7 +8,7 @@ import pieneck.constants
 
 # create simulation object
 pn = Pieneck()
-pn.resolution(51, 360, 360)
+pn.resolution(11, 10, 10)
 
 # set frequency range to plot over
 pn.frequency(13e6, 15e6, 100e3)
@@ -21,7 +21,7 @@ w1.setCenter((0, 0, 10), (0, 0, 0))
 pn.add(w1)
 
 # add a 1V voltage source to the simulation
-source = VoltageSource(1 - 2j)
+source = VoltageSource(1 - 0j)
 source.attach(w1, 50)
 pn.add(source)
 
